@@ -50,7 +50,7 @@ function initHero(){
   });
   initSpotlight(hero); initDust(hero);
 }
-/* Intro: the bell. Once per visit, skippable, never with reduced motion. */
+/* Intro: video welcome (portrait on phones, landscape on desktop), falls back to the bell. Once per visit, skippable, never with reduced motion. */
 function runIntro(done){
   var el=$("#intro");
   /* visitors from an ad (or any tagged link) go straight to the page: no intro */
@@ -58,11 +58,41 @@ function runIntro(done){
   if(!el||REDUCE||fromAd||store.sget("ifl-intro")){done();return;}
   store.sset("ifl-intro","1");
   el.hidden=false; document.body.classList.add("is-intro");
-  var finished=false;
-  var end=function(){if(finished)return;finished=true;el.classList.add("done");document.body.classList.remove("is-intro");done();};
-  requestAnimationFrame(function(){el.classList.add("run");});
-  el.addEventListener("click",end); document.addEventListener("keydown",end,{once:true});
-  setTimeout(end,2300);
+  var finished=false,vid=$(".intro__video",el),guard=0;
+  var end=function(){
+    if(finished)return;finished=true;clearTimeout(guard);
+    if(el.classList.contains("vid")){
+      try{vid.pause();}catch(e){}
+      el.classList.add("out");document.body.classList.remove("is-intro");done();
+      setTimeout(function(){el.classList.add("done");vid.removeAttribute("src");try{vid.load();}catch(e){}},460);
+      return;
+    }
+    el.classList.add("done");document.body.classList.remove("is-intro");done();
+  };
+  var bell=function(){
+    if(finished)return;
+    el.classList.remove("vid");el.setAttribute("aria-hidden","true");
+    requestAnimationFrame(function(){el.classList.add("run");});
+    el.addEventListener("click",end);
+    clearTimeout(guard);guard=setTimeout(end,2300);
+  };
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" ")end();});
+  if(!vid||!vid.play){bell();return;}
+  var portrait=matchMedia("(orientation: portrait)").matches;
+  vid.src=vid.getAttribute(portrait?"data-src-p":"data-src-l");
+  el.classList.add("vid");el.removeAttribute("aria-hidden");
+  var snd=$("[data-intro-sound]",el),skip=$("[data-intro-skip]",el);
+  var setSnd=function(){el.classList.toggle("muted",vid.muted);};
+  if(skip)skip.addEventListener("click",function(e){e.stopPropagation();end();});
+  if(snd)snd.addEventListener("click",function(e){e.stopPropagation();vid.muted=false;vid.currentTime=0;vid.play().catch(function(){});setSnd();clearTimeout(guard);guard=setTimeout(end,15000);});
+  vid.addEventListener("ended",end);
+  vid.addEventListener("error",bell);
+  /* stalled or never starts: don't hold the page hostage */
+  guard=setTimeout(function(){if(vid.currentTime<.2)bell();else{clearTimeout(guard);guard=setTimeout(end,12000);}},4000);
+  /* try with sound first; browsers that block it get a muted start plus a sound button */
+  vid.muted=false;
+  var p=vid.play();
+  if(p&&p.catch)p.then(setSnd).catch(function(){vid.muted=true;setSnd();vid.play().catch(bell);});else setSnd();
 }
 function initSpotlight(hero){
   if(!FINE||REDUCE){hero.classList.add("drift");if(!REDUCE)initTilt(hero);return;}
