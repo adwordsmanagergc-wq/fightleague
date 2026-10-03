@@ -1368,3 +1368,11 @@ html:not(.js) .cd{display:none}
 .intro__btn:hover,.intro__btn:focus-visible{border-color:var(--gold);color:var(--gold)}
 .intro.vid .intro__skip{display:block;right:24px}
 .intro.vid.muted .intro__sound{display:block;left:24px;background:var(--gold);color:#000;border-color:var(--gold)}
+.intro.vid.gate .intro__video{opacity:0}
+.intro.vid.gate .intro__core{display:grid;position:absolute;left:0;right:0;top:50%;transform:translateY(-62%);justify-items:center;margin:0 auto}
+.intro.vid.gate .intro__logo{-webkit-mask:none;mask:none}
+.intro.vid.gate .intro__enter{display:block;position:absolute;left:0;right:0;margin:0 auto;width:max-content;bottom:auto;top:calc(50% + min(20vh,190px));padding:18px 34px;font-size:14px;background:var(--gold);color:#000;border-color:var(--gold);animation:fadeUp 400ms 200ms var(--ease-out) both}
+.intro.vid.gate .intro__enter:hover{background:var(--bone);border-color:var(--bone);color:#000}
+.intro.vid.gate .intro__enter:focus-visible{outline:2px solid var(--bone);outline-offset:4px}
+.intro.vid.gate .intro__sound{display:none}
+.intro.vid:not(.gate) .intro__enter{display:none}
