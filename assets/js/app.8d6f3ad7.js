@@ -76,23 +76,36 @@ function runIntro(done){
     el.addEventListener("click",end);
     clearTimeout(guard);guard=setTimeout(end,2300);
   };
-  document.addEventListener("keydown",function(e){if(e.key==="Escape"||e.key==="Enter"||e.key===" ")end();});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape")end();});
   if(!vid||!vid.play){bell();return;}
   var portrait=matchMedia("(orientation: portrait)").matches;
+  vid.preload="auto";
   vid.src=vid.getAttribute(portrait?"data-src-p":"data-src-l");
-  el.classList.add("vid");el.removeAttribute("aria-hidden");
+  el.classList.add("vid","gate");el.removeAttribute("aria-hidden");
   var snd=$("[data-intro-sound]",el),skip=$("[data-intro-skip]",el);
+  /* the tap is the browser's permission for sound, so the video always plays with audio */
+  var enter=document.createElement("button");
+  enter.type="button";enter.className="intro__btn intro__enter";
+  enter.textContent=LANG==="th"?"แตะเพื่อเข้าสู่":"Tap to enter";
+  el.appendChild(enter);
   var setSnd=function(){el.classList.toggle("muted",vid.muted);};
+  var go=function(){
+    if(finished||!el.classList.contains("gate"))return;
+    el.classList.remove("gate");
+    vid.muted=false;vid.currentTime=0;
+    var p=vid.play();
+    if(p&&p.catch)p.then(setSnd).catch(function(){vid.muted=true;setSnd();vid.play().catch(bell);});else setSnd();
+    clearTimeout(guard);
+    guard=setTimeout(function(){if(vid.currentTime<.2)bell();else{clearTimeout(guard);guard=setTimeout(end,12000);}},5000);
+  };
+  enter.addEventListener("click",function(e){e.stopPropagation();go();});
+  el.addEventListener("click",function(e){if(el.classList.contains("gate"))go();});
+  document.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){if(el.classList.contains("gate")){e.preventDefault();go();}}});
   if(skip)skip.addEventListener("click",function(e){e.stopPropagation();end();});
-  if(snd)snd.addEventListener("click",function(e){e.stopPropagation();vid.muted=false;vid.currentTime=0;vid.play().catch(function(){});setSnd();clearTimeout(guard);guard=setTimeout(end,15000);});
+  if(snd)snd.addEventListener("click",function(e){e.stopPropagation();vid.muted=false;vid.currentTime=0;vid.play().catch(function(){});setSnd();});
   vid.addEventListener("ended",end);
-  vid.addEventListener("error",bell);
-  /* stalled or never starts: don't hold the page hostage */
-  guard=setTimeout(function(){if(vid.currentTime<.2)bell();else{clearTimeout(guard);guard=setTimeout(end,12000);}},4000);
-  /* try with sound first; browsers that block it get a muted start plus a sound button */
-  vid.muted=false;
-  var p=vid.play();
-  if(p&&p.catch)p.then(setSnd).catch(function(){vid.muted=true;setSnd();vid.play().catch(bell);});else setSnd();
+  vid.addEventListener("error",function(){if(el.classList.contains("gate")){el.classList.remove("gate");enter.remove();}bell();});
+  try{enter.focus({preventScroll:true});}catch(e){}
 }
 function initSpotlight(hero){
   if(!FINE||REDUCE){hero.classList.add("drift");if(!REDUCE)initTilt(hero);return;}
