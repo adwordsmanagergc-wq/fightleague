@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+  <defs>
+    <linearGradient id="b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2622"/><stop offset="1" stop-color="#0b0a09"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f4d27a"/><stop offset=".5" stop-color="#d9a441"/><stop offset="1" stop-color="#9c6b1c"/></linearGradient>
+  </defs>
+  <!-- fighter in guard: head, shoulders, raised gloves, torso -->
+  <path fill="url(#b)" stroke="#d9a441" stroke-opacity=".35" stroke-width="4" d="
+    M450 120c-78 0-136 62-136 146 0 60 28 108 70 132l-8 40c-90 18-170 52-214 96
+    -40 40-48 92-30 150l38 120c-60 6-104 52-104 112 0 66 54 116 122 116 52 0 94-28 112-70l20 2
+    -18 336h356l-18-336 20-2c18 42 60 70 112 70 68 0 122-50 122-116 0-60-44-106-104-112l38-120
+    c18-58 10-110-30-150-44-44-124-78-214-96l-8-40c42-24 70-72 70-132 0-84-58-146-136-146z"/>
+  <text x="450" y="760" text-anchor="middle" font-family="Big Shoulders Stencil Display, Impact, Arial Black, sans-serif" font-weight="900" font-size="420" fill="url(#g)">?</text>
+</svg>
