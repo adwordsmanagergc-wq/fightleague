@@ -1,0 +1,6 @@
+/* v1.19 results */
+.rs__txt{min-width:0}
+.rs__row .tape{white-space:nowrap}
+.rs h2 small{white-space:nowrap}
+@media (max-width:760px){.rs__row{grid-template-columns:minmax(0,1fr) auto;gap:10px}.rs__txt{font-size:16px}.rs__row .tape{font-size:10px;padding:4px 6px}}
+.qual .match{margin:0}

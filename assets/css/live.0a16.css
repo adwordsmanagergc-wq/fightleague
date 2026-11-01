@@ -1,0 +1,24 @@
+.nav__live a{opacity:1!important;color:var(--bone)}
+.nav__live a::before,.livedot::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--red);margin-right:8px;vertical-align:middle;animation:iflpulse 1.6s ease-in-out infinite}
+.drawer .nav__live a::before{width:9px;height:9px}
+@keyframes iflpulse{50%{opacity:.3}}
+@media (prefers-reduced-motion:reduce){.nav__live a::before,.livedot::before{animation:none}}
+.stub__offer{font:700 13px/1.35 var(--f-body);color:var(--red);margin:0 0 10px}
+.stub__offer b{display:block;font-size:15px;text-transform:uppercase;letter-spacing:.04em}
+:lang(th) .stub__offer{font-family:var(--f-thai)}
+.stub__watch{display:inline-block;margin-top:10px;font:600 12px/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:#1f1c17}
+:lang(th) .stub__watch{font-family:var(--f-thai);letter-spacing:0;font-size:14px;text-transform:none}
+.livebox{position:relative;aspect-ratio:16/9;background:#000;border:1px solid var(--line);overflow:hidden}
+.livebox iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.liveacts{display:flex;flex-wrap:wrap;gap:var(--s3) var(--s4);align-items:center;margin:var(--s4) 0}
+.livetimes{list-style:none;padding:0;margin:0 0 var(--s4);display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.livetimes li{background:var(--ink-2);padding:var(--s2) var(--s3)}
+.livetimes span{display:block;font:600 11px/1.3 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;color:var(--bone);opacity:.6;margin-bottom:6px}
+:lang(th) .livetimes span{font-family:var(--f-thai);letter-spacing:0;font-size:13px;text-transform:none}
+.livetimes b{font:800 22px/1.1 var(--f-body);color:var(--bone)}
+.livetimes li.is-home b{color:var(--gold)}
+.pg-live .phead{min-height:min(52svh,520px)}
+.pg-live .phead__in{padding-bottom:var(--s4)}
+.pg-live .sec{padding-top:var(--s3)}
+.livenote{max-width:62ch;color:var(--bone);opacity:.85;line-height:1.6}
+.livenote p{margin:0 0 var(--s2)}
